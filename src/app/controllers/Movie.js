@@ -199,8 +199,6 @@ router.put('/rate', AuthMiddleware, (req, res) => {
 
       movie.save();
 
-      console.log(movie);
-
       return res.send(movie);
     })
     .catch(() => {
