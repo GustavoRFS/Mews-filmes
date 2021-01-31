@@ -176,22 +176,31 @@ router.put('/rate', AuthMiddleware, (req, res) => {
   movieSchema
     .findById(_id)
     .then((movie) => {
+      const ratings = [];
       if (req.name === 'Gururu') {
         movie.gururu_rating = ratingValue;
-        if (movie.bururu_rating) {
-          movie.average_rating = (movie.bururu_rating + ratingValue) / 2;
-        } else {
-          movie.average_rating = ratingValue;
-        }
       } else if (req.name === 'Bururu') {
         movie.bururu_rating = ratingValue;
-        if (movie.gururu_rating) {
-          movie.average_rating = (movie.gururu_rating + ratingValue) / 2;
-        } else {
-          movie.average_rating = ratingValue;
-        }
       }
+
+      if (movie.gururu_rating !== undefined) {
+        ratings.push(movie.gururu_rating);
+      }
+      if (movie.bururu_rating !== undefined) {
+        ratings.push(movie.bururu_rating);
+      }
+      var average = 0;
+      ratings.forEach((rating) => {
+        average += rating;
+      });
+      average /= ratings.length;
+
+      movie.average_rating = average;
+
       movie.save();
+
+      console.log(movie);
+
       return res.send(movie);
     })
     .catch(() => {
