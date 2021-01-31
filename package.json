@@ -1,0 +1,37 @@
+{
+  "name": "filmineos-back-end",
+  "version": "1.0.0",
+  "description": "Back-end para o app Filmineos feito em React Native ",
+  "main": "./src/index.js",
+  "scripts": {
+    "build": "babel ./src -d dist",
+    "start": "npm install --progress=false && npm run build && export NODE_ENV=production && node dist/index.js",
+    "dev": "npm install --progress=false && npm run build && export NODE_ENV=development && node dist/index.js",
+    "serve": "nodemon --exec babel-node ./src/index.js"
+  },
+  "author": "Comp Júnior",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.6",
+    "nodemailer": "^6.4.6",
+    "nodemailer-express-handlebars": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/polyfill": "^7.11.5",
+    "@babel/preset-env": "^7.9.0",
+    "babel-plugin-inline-json-import": "^0.3.2",
+    "babel-plugin-module-alias": "^1.6.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "nodemon": "^2.0.2"
+  }
+}

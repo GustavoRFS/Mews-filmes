@@ -1,0 +1,383 @@
+swagger: '2.0'
+info:
+  description: 'Documentação da API do projeto.'
+  version: '1.0.0'
+  title: 'Filmineos API'
+tags:
+  - name: 'Auth'
+    description: 'Operações relacionadas a Autenticação e usuários'
+  - name: 'Movies'
+    description: 'Operações relacionadas ao gerenciamento dos filmes'
+schemes:
+  - 'https'
+paths:
+  /auth/register:
+    post:
+      tags:
+        - 'Auth'
+      summary: 'Faz o registro do usuário'
+      description: 'Faz o registro do usuário'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'Dados do usuário a ser cadastrado'
+          required: true
+          schema:
+            type: 'object'
+            properties:
+              name:
+                type: 'string'
+              email:
+                type: 'string'
+              password:
+                type: 'string'
+      responses:
+        '200':
+          description: 'Ok'
+          schema:
+            type: 'object'
+            properties:
+              message:
+                type: 'string'
+                example: 'Registered Successfully'
+        '400':
+          description: 'Bad request'
+        '500':
+          description: 'Internal server error'
+  /auth/login:
+    post:
+      tags:
+        - 'Auth'
+      summary: 'Faz o login do usuário'
+      description: 'Faz o login do usuário'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'Dados do usuário a ser logado'
+          required: true
+          schema:
+            type: 'object'
+            properties:
+              email:
+                type: 'string'
+              password:
+                type: 'string'
+      responses:
+        '200':
+          description: 'Ok'
+          schema:
+            type: 'object'
+            properties:
+              token:
+                type: 'string'
+                example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZmY5ZTk1ZmRjMjZlNTk1MDZlMDMzNDIiLCJuYW1lIjoiR3VydXJ1IiwicHJvZmlsZVBpYyI6ImtrayIsImlhdCI6MTYxMDIzMTcwNH0.x2Ax1o7U6Lgur53nttLSkISn4V5WpLiz07nWz5oGRFE'
+        '400':
+          description: 'Bad request'
+        '500':
+          description: 'Internal server error'
+  /auth/image:
+    put:
+      tags:
+        - 'Auth'
+      summary: 'Altera a imagem de perfil do usuário'
+      description: 'Altera a imagem de perfil do usuário'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'Link da imagem'
+          required: true
+          schema:
+            type: 'object'
+            properties:
+              profilePic:
+                type: 'string'
+      responses:
+        '200':
+          description: 'Ok'
+          schema:
+            type: 'object'
+            properties:
+              message:
+                type: 'string'
+                example: 'Image changed successfully'
+        '400':
+          description: 'Bad request'
+        '500':
+          description: 'Internal server error'
+  /auth/user_data:
+    get:
+      tags:
+        - 'Auth'
+      summary: 'Obtem os dados do usuário'
+      description: 'Obtem os dados do usuários através do token informado'
+      produces:
+        - 'application/json'
+      responses:
+        '200':
+          description: 'Ok'
+          schema:
+            type: 'object'
+            items:
+              $ref: '#/definitions/UserDat'
+        '400':
+          description: 'Bad request'
+        '500':
+          description: 'Internal server error'
+  /movies:
+    get:
+      tags:
+        - 'Movies'
+      summary: 'Obtem todos os filmes'
+      description: 'Obtem todos os filmes, em ordem de melhor avaliação média'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      responses:
+        '200':
+          description: 'Ok'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/MovieResponse'
+        '400':
+          description: 'Bad request'
+        '500':
+          description: 'Internal server error'
+    post:
+      tags:
+        - 'Movies'
+      summary: 'Adiciona um filme'
+      description: 'Adiciona um filme'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'Dados do filme a ser adicionado'
+          required: true
+          schema:
+            $ref: '#/definitions/Movie'
+      responses:
+        '200':
+          description: 'Ok'
+          schema:
+            $ref: '#/definitions/MovieResponse'
+        '400':
+          description: 'Bad request'
+        '500':
+          description: 'Internal server error'
+    delete:
+      tags:
+        - 'Movies'
+      summary: 'Remove determinado filme'
+      description: 'Remove determinado filme, requerindo o _id do filme'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'query'
+          name: '_id'
+          description: 'ID do filme a ser removido'
+          required: true
+          schema:
+            type: 'string'
+            example: '5ffa2927a816d9eb786f22aa'
+
+      responses:
+        '200':
+          description: 'Ok'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/MovieResponse'
+        '400':
+          description: 'Bad request'
+        '500':
+          description: 'Internal server error'
+  /movies/average:
+    get:
+      tags:
+        - 'Movies'
+      summary: 'Obtem o top 10 filmes de acordo com a avaliação média'
+      description: 'Obtem o top 10 filmes de acordo com a avaliação média'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      responses:
+        '200':
+          description: 'Ok'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/MovieResponse'
+        '400':
+          description: 'Bad request'
+        '500':
+          description: 'Internal server error'
+  /movies/bururu:
+    get:
+      tags:
+        - 'Movies'
+      summary: 'Obtem o top 10 filmes de acordo com a avaliação da Bururu'
+      description: 'Obtem o top 10 filmes de acordo com a avaliação da Bururu'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      responses:
+        '200':
+          description: 'Ok'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/MovieResponse'
+        '400':
+          description: 'Bad request'
+        '500':
+          description: 'Internal server error'
+  /movies/gururu:
+    get:
+      tags:
+        - 'Movies'
+      summary: 'Obtem o top 10 filmes de acordo com a avaliação do Gururu'
+      description: 'Obtem o top 10 filmes de acordo com a avaliação do Gururu'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      responses:
+        '200':
+          description: 'Ok'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/MovieResponse'
+        '400':
+          description: 'Bad request'
+        '500':
+          description: 'Internal server error'
+  /movies/not_rated:
+    get:
+      tags:
+        - 'Movies'
+      summary: 'Obtem os filmes que não foram avaliados pelo usuário que fez a requisição'
+      description: 'Obtem os filmes que não foram avaliados pelo usuário que fez a requisição'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      responses:
+        '200':
+          description: 'Ok'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/MovieResponse'
+        '400':
+          description: 'Bad request'
+        '500':
+          description: 'Internal server error'
+  /movies/rate:
+    put:
+      tags:
+        - 'Movies'
+      summary: 'Avalia um filme'
+      description: 'Avalia um filme'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'Dados do filme e a nota da avaliação'
+          required: true
+          schema:
+            type: 'object'
+            properties:
+              _id:
+                type: 'string'
+                example: '5ffa21d7540824e0bc03962a'
+              ratingValue:
+                type: 'number'
+                example: 8.7
+      responses:
+        '200':
+          description: 'Ok'
+          schema:
+            $ref: '#/definitions/MovieResponse'
+        '400':
+          description: 'Bad request'
+        '500':
+          description: 'Internal server error'
+definitions:
+  Movie:
+    type: 'object'
+    properties:
+      title:
+        type: 'string'
+      overview:
+        type: 'string'
+      release_date:
+        type: 'string'
+      poster_path:
+        type: 'string'
+      backdrop_path:
+        type: 'string'
+      id:
+        type: 'number'
+  MovieResponse:
+    type: 'object'
+    properties:
+      _id:
+        type: 'string'
+      title:
+        type: 'string'
+      overview:
+        type: 'string'
+      release_date:
+        type: 'string'
+      poster_path:
+        type: 'string'
+      backdrop_path:
+        type: 'string'
+      average_rating:
+        type: 'string'
+      gururu_rating:
+        type: 'string'
+      bururu_rating:
+        type: 'string'
+      id:
+        type: 'number'
+      __v:
+        type: 'number'
+  UserData:
+    type: 'object'
+    properties:
+      _id:
+        type: 'string'
+      name:
+        type: 'string'
+      profilePic:
+        type: 'string'
+      email:
+        type: 'string'
+      __v:
+        type: 'number'
