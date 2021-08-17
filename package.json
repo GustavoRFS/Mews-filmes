@@ -5,6 +5,7 @@
   "main": "./src/index.js",
   "scripts": {
     "build": "babel ./src -d dist",
+    "vercel-build":"babel ./src -d api && cp package.json api",
     "start": "node ./dist/index.js",
     "dev": "npm install --progress=false && npm run build && export NODE_ENV=development && node dist/index.js",
     "serve": "nodemon --exec babel-node ./src/index.js"
