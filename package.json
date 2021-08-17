@@ -12,9 +12,6 @@
   "author": "Comp Júnior",
   "license": "ISC",
   "dependencies": {
-    "browserslist": ">=4.16.5",
-    "glob-parent": ">=5.1.2",
-    "normalize-url": ">=4.5.1",
     "@babel/runtime": "^7.12.5",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -24,11 +21,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.6",
     "nodemailer": "^6.4.6",
-    "handlebars": ">=4.7.7",
-    "nodemailer-express-handlebars": "^4.0.0",
-    "path-parse": ">=1.0.7",
-    "lodash": ">=4.17.21",
-    
+    "nodemailer-express-handlebars": "^4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
