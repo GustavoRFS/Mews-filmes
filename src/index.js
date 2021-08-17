@@ -21,4 +21,4 @@ app.listen(port, () => {
   console.log(`Servidor rodando no link http://localhost:${port}`);
 });
 
-export app;
+export {app};
