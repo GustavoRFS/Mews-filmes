@@ -17,8 +17,8 @@ app.get('/', (req, res) => {
 app.use('/auth', Auth);
 app.use('/movies', Movies);
 
-app.listen(port, () => {
-  console.log(`Servidor rodando no link http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Servidor rodando no link http://localhost:${port}`);
+// });
 
 module.exports=app;
