@@ -1,9 +1,10 @@
 {
     "version":2,
     "builds":[
+        {"use":"npm run build"},
         {
             "src":"./src/index.js",
-            "use":"babel-core"
+            "use":"@vercel/node"
         }
     ],
     "routes":[
